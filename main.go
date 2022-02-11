@@ -31,7 +31,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	"github.com/spotify/flink-on-k8s-operator/apis/flinkcluster/v1beta1"
+	flinkclusterv1beta1 "github.com/spotify/flink-on-k8s-operator/apis/flinkcluster/v1beta1"
 	"github.com/spotify/flink-on-k8s-operator/controllers/flinkcluster"
+	flinkclustercontrollers "github.com/spotify/flink-on-k8s-operator/controllers/flinkcluster"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -46,6 +48,7 @@ func init() {
 	corev1.AddToScheme(scheme)
 	v1beta1.AddToScheme(scheme)
 	networkingv1.AddToScheme(scheme)
+	utilruntime.Must(flinkclusterv1beta1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -112,6 +115,13 @@ func main() {
 		}
 	}
 
+	if err = (&flinkclustercontrollers.FlinkApplicationClusterReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "FlinkApplicationCluster")
+		os.Exit(1)
+	}
 	// +kubebuilder:scaffold:builder
 
 	setupLog.Info("Starting manager")

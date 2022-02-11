@@ -1,0 +1,24 @@
+# permissions for end users to edit flinkapplicationclusters.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: flinkapplicationcluster-editor-role
+rules:
+- apiGroups:
+  - flinkcluster.flinkoperator.k8s.io
+  resources:
+  - flinkapplicationclusters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - flinkcluster.flinkoperator.k8s.io
+  resources:
+  - flinkapplicationclusters/status
+  verbs:
+  - get

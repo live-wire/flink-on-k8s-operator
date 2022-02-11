@@ -18,4 +18,13 @@ resources:
     defaulting: true
     validation: true
     webhookVersion: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: flinkoperator.k8s.io
+  group: flinkcluster
+  kind: FlinkApplicationCluster
+  path: github.com/spotify/flink-on-k8s-operator/apis/flinkcluster/v1beta1
+  version: v1beta1
 version: "3"
